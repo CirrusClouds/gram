@@ -56,6 +56,8 @@
               nil))
     nil))
 
+(def memoized-schema->malli* (memoize schema->malli*))
+
 (defn grab-compile-schema [filename]
   (-> filename slurp parse compile-schema))
 
@@ -65,12 +67,12 @@
     {:grab-schema
      schema
      :malli-schema
-     (->> (update-vals types-by-name (fn [type] (schema->malli* types-by-name type)))
+     (->> (update-vals types-by-name (fn [type] (memoized-schema->malli* types-by-name type)))
           (filter (comp identity second))
           (into {}))}))
 
 (defn query-typeref->malli [{:keys [juxt.grab.alpha.graphql/list-type
-                                    juxt.grab.alpha.graphql/name] :as typeref}
+                                    juxt.grab.alpha.graphql/name]}
                             schema]
   (cond
     list-type (into [:sequential]
