@@ -56,6 +56,19 @@
               nil))
     nil))
 
+(defn grab-compile-schema [filename]
+  (-> filename slurp parse compile-schema))
+
+(defn schema->malli [filename]
+  (let [{:keys [juxt.grab.alpha.schema/types-by-name] :as schema}
+        (grab-compile-schema filename)]
+    {:grab-schema
+     schema
+     :malli-schema
+     (->> (update-vals types-by-name (fn [type] (schema->malli* types-by-name type)))
+          (filter (comp identity second))
+          (into {}))}))
+
 (defn query-typeref->malli [{:keys [juxt.grab.alpha.graphql/list-type
                                     juxt.grab.alpha.graphql/name] :as typeref}
                             schema]
@@ -78,19 +91,6 @@
                                {:optional true
                                 :schema (query-typeref->malli type-ref schema)})])
                           variable-definitions))})
-
-(defn grab-compile-schema [filename]
-  (-> filename slurp parse compile-schema))
-
-(defn schema->malli [filename]
-  (let [{:keys [juxt.grab.alpha.schema/types-by-name] :as schema}
-        (grab-compile-schema filename)]
-    {:grab-schema
-     schema
-     :malli-schema
-     (->> (update-vals types-by-name (fn [type] (schema->malli* types-by-name type)))
-          (filter (comp identity second))
-          (into {}))}))
 
 (defn grab-compile-document [filename schema]
   (-> filename slurp parse (compile-document schema)))
