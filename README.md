@@ -4,3 +4,4 @@ Given a graphQL query document and schema file, it will generate malli schemas f
 
 ## TODO
 - Integration with Blip
+- A better solution for nullables
