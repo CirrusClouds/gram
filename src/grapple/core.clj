@@ -1,4 +1,4 @@
-(ns gram.core
+(ns grapple.core
   (:require
    [juxt.grab.alpha.schema :refer [compile-schema]]
    [juxt.grab.alpha.document :refer [compile-document]]
