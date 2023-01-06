@@ -1,0 +1,23 @@
+mutation CreateCat($data: CatInput!) {
+  createCat(data: $data) {
+    id
+  }
+}
+
+mutation CreateCats($data: [CatInput]!) {
+  createCat(data: $data) {
+    id
+  }
+}
+
+mutation CreateDog ($data: DogInput!) {
+  createDog(data: $data) {
+    id
+  }
+}
+
+mutation CreateHuman ($data: HumanInput!) {
+  createHuman(data: $data) {
+    id
+  }
+}

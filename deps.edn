@@ -1,0 +1,15 @@
+{:paths ["src" "resources"]
+ :deps {org.clojure/clojure {:mvn/version "1.11.1"}
+        metosin/malli {:mvn/version "0.9.2"}
+        juxt/grab
+        {:git/url "https://github.com/juxt/grab.git"
+         :sha "6722e5885039f31e28a14d2bd23f956dd3c1dde4"
+         ;;:local/root "../grab"
+         }}
+ :aliases
+ {:dev {:extra-paths ["test-resources"]}
+  :test {:extra-paths ["test" "test-resources"]
+         :extra-deps {org.clojure/test.check {:mvn/version "1.1.1"}
+                      io.github.cognitect-labs/test-runner
+                      {:git/tag "v0.5.0" :git/sha "48c3c67"}}
+         :exec-fn cognitect.test-runner.api/test}}}

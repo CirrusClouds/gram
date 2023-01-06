@@ -1,0 +1,83 @@
+schema @site(type: "test-1") {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  dogs: [Dog]!
+  cats: [Cat]!
+  pets: [Pet]!
+  pet(id: ID!): Pet
+  humans: [Human]!
+  human(id: ID!): Human
+}
+
+
+type Mutation {
+  createDog(data: DogInput): Dog
+  createHuman(data: HumanInput): Human
+  createCat(data: CatInput): Cat
+  createCats(data: [CatInput]): Cat
+  }
+
+enum DogBreed {
+  Spaniel
+  Chihuahua
+  Husky
+}
+
+enum CatBreed {
+  Idk
+  Any
+}
+
+enum Likes {
+  Sitting
+  Playing
+  Sleeping
+  Eating
+}
+
+input DogInput {
+  id: ID!
+  name: String
+  breed: DogBreed
+  likes: [Likes!]
+}
+
+type Dog {
+  id: ID!
+  name: String
+  breed: DogBreed
+  owner: Human @site(each: "hasPets")
+  likes: [Likes!]
+}
+
+input CatInput {
+  id: ID!
+  name: String
+  breed: CatBreed
+  likes: [Likes]!
+}
+
+type Cat {
+  id: ID!
+  name: String
+  breed: CatBreed
+  owner: Human @site(each: "hasPets")
+  likes: [Likes]!
+}
+
+union Pet = Dog | Cat
+
+input HumanInput {
+  id: ID!
+  name: String
+  hasPets: [ID]
+}
+
+type Human {
+  id: ID!
+  name: String
+  pets: [Pet] @site(ref: "hasPets")
+}
